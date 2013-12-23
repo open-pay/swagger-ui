@@ -17,7 +17,7 @@
   <script src='swagger-ui.js' type='text/javascript'></script>
   <script src='lib/highlight.7.3.pack.js' type='text/javascript'></script>
   <script type="text/javascript">
-    $(function () {
+    jQuery(function () {
       window.swaggerUi = new SwaggerUi({
       url: "http://petstore.swagger.wordnik.com/api/api-docs",
       dom_id: "swagger-ui-container",
@@ -26,7 +26,7 @@
         if(console) {
           console.log("Loaded SwaggerUI")
         }
-        $('pre code').each(function(i, e) {hljs.highlightBlock(e)});
+        jQuery('pre code').each(function(i, e) {hljs.highlightBlock(e)});
       },
       onFailure: function(data) {
         if(console) {
@@ -37,8 +37,8 @@
       docExpansion: "none"
     });
 
-    $('#input_apiKey').change(function() {
-      var key = $('#input_apiKey')[0].value;
+    jQuery('#input_apiKey').change(function() {
+      var key = jQuery('#input_apiKey')[0].value;
       console.log("key: " + key);
       if(key && key.trim() != "") {
         console.log("added key " + key);

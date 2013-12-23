@@ -17,7 +17,7 @@ class SwaggerUi extends Backbone.Router
       delete options.dom_id
 
     # Create an empty div which contains the dom_id
-    $('body').append('<div id="' + @dom_id + '"></div>') if not $('#' + @dom_id)?
+    jQuery('body').append('<div id="' + @dom_id + '"></div>') if not jQuery('#' + @dom_id)?
 
     @options = options
 
@@ -27,7 +27,7 @@ class SwaggerUi extends Backbone.Router
     @options.failure = (d) => @onLoadFailure(d)
 
     # Create view to handle the header inputs
-    @headerView = new HeaderView({el: $('#header')})
+    @headerView = new HeaderView({el: jQuery('#header')})
 
     # Event handler for when the baseUrl/apiKey is entered by user
     @headerView.on 'update-swagger-ui', (data) => @updateSwaggerUi(data)
@@ -55,7 +55,7 @@ class SwaggerUi extends Backbone.Router
   #  so it gets called when SwaggerApi completes loading
   render:() ->
     @showMessage('Finished Loading Resource Information. Rendering Swagger UI...')
-    @mainView = new MainView({model: @api, el: $('#' + @dom_id)}).render()
+    @mainView = new MainView({model: @api, el: jQuery('#' + @dom_id)}).render()
     @showMessage()
     switch @options.docExpansion
       when "full" then Docs.expandOperationsForResource('')
@@ -79,15 +79,15 @@ class SwaggerUi extends Backbone.Router
 
   # Shows message on topbar of the ui
   showMessage: (data = '') ->
-    $('#message-bar').removeClass 'message-fail'
-    $('#message-bar').addClass 'message-success'
-    $('#message-bar').html data
+    jQuery('#message-bar').removeClass 'message-fail'
+    jQuery('#message-bar').addClass 'message-success'
+    jQuery('#message-bar').html data
 
   # shows message in red
   onLoadFailure: (data = '') ->
-    $('#message-bar').removeClass 'message-success'
-    $('#message-bar').addClass 'message-fail'
-    val = $('#message-bar').html data
+    jQuery('#message-bar').removeClass 'message-success'
+    jQuery('#message-bar').addClass 'message-fail'
+    val = jQuery('#message-bar').html data
     @options.onFailure(data) if @options.onFailure?
     val
 

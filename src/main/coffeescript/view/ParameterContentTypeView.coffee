@@ -3,9 +3,9 @@ class ParameterContentTypeView extends Backbone.View
 
   render: ->
     template = @template()
-    $(@el).html(template(@model))
+    jQuery(@el).html(template(@model))
 
-    $('label[for=parameterContentType]', $(@el)).text('Parameter content type:')
+    jQuery('label[for=parameterContentType]', jQuery(@el)).text('Parameter content type:')
 
     @
 

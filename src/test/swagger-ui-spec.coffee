@@ -22,28 +22,28 @@ describe 'SwaggerUi', ->
   describe 'DOM container', ->
     
     afterEach ->
-      $("#swagger_ui").remove()
+      jQuery("#swagger_ui").remove()
     
     it "renders to default DOM container if it exists", ->
       window.ui = new SwaggerUi
       waitsFor ->
         ui.ready          
       runs ->
-        expect($("#swagger_ui").length).toBe(1)
+        expect(jQuery("#swagger_ui").length).toBe(1)
     
     it "creates default DOM container if it doesn't exist", ->
-      expect($("#swagger_ui").length).toBe(0)
+      expect(jQuery("#swagger_ui").length).toBe(0)
       window.ui = new SwaggerUi
       waitsFor ->
         ui.ready
       runs ->
-        expect($("#swagger_ui").length).toBe(1)
+        expect(jQuery("#swagger_ui").length).toBe(1)
             
     it "allows an alternate DOM container to be specified when initialized", ->
-      expect($("#swagger_ui").length).toBe(0)
+      expect(jQuery("#swagger_ui").length).toBe(0)
       window.ui = new SwaggerUi
         dom_id: 'zhwagger'
       waitsFor ->
         ui.ready
       runs ->
-        expect($("#zhwagger").length).toBe(1)
+        expect(jQuery("#zhwagger").length).toBe(1)

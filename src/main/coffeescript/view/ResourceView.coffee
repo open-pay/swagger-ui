@@ -3,7 +3,7 @@ class ResourceView extends Backbone.View
 
   render: ->
     console.log @model.description
-    $(@el).html(Handlebars.templates.resource(@model))
+    jQuery(@el).html(Handlebars.templates.resource(@model))
 
     @number = 0
 
@@ -17,6 +17,6 @@ class ResourceView extends Backbone.View
 
     # Render an operation and add it to operations li
     operationView = new OperationView({model: operation, tagName: 'li', className: 'endpoint'})
-    $('.endpoints', $(@el)).append operationView.render().el
+    jQuery('.endpoints', jQuery(@el)).append operationView.render().el
 
     @number++

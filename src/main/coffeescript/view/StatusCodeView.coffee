@@ -3,7 +3,7 @@ class StatusCodeView extends Backbone.View
 
   render: ->
     template = @template()
-    $(@el).html(template(@model))
+    jQuery(@el).html(template(@model))
     @
 
   template: ->

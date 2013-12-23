@@ -14,7 +14,7 @@ class OperationView extends Backbone.View
     isMethodSubmissionSupported = true #jQuery.inArray(@model.method, @model.supportedSubmitMethods) >= 0
     @model.isReadOnly = true unless isMethodSubmissionSupported
 
-    $(@el).html(Handlebars.templates.operation(@model))
+    jQuery(@el).html(Handlebars.templates.operation(@model))
 
     if @model.responseClassSignature and @model.responseClassSignature != 'string'
       signatureModel =
@@ -23,9 +23,9 @@ class OperationView extends Backbone.View
         signature: @model.responseClassSignature
         
       responseSignatureView = new SignatureView({model: signatureModel, tagName: 'div'})
-      $('.model-signature', $(@el)).append responseSignatureView.render().el
+      jQuery('.model-signature', jQuery(@el)).append responseSignatureView.render().el
     else
-      $('.model-signature', $(@el)).html(@model.type)
+      jQuery('.model-signature', jQuery(@el)).html(@model.type)
 
     contentTypeModel =
       isParam: false
@@ -41,7 +41,7 @@ class OperationView extends Backbone.View
           contentTypeModel.consumes = 'multipart/form-data'
 
     responseContentTypeView = new ResponseContentTypeView({model: contentTypeModel})
-    $('.response-content-type', $(@el)).append responseContentTypeView.render().el
+    jQuery('.response-content-type', jQuery(@el)).append responseContentTypeView.render().el
 
     # Render each parameter
     @addParameter param, contentTypeModel.consumes for param in @model.parameters
@@ -55,24 +55,24 @@ class OperationView extends Backbone.View
     # Render a parameter
     param.consumes = consumes
     paramView = new ParameterView({model: param, tagName: 'tr', readOnly: @model.isReadOnly})
-    $('.operation-params', $(@el)).append paramView.render().el
+    jQuery('.operation-params', jQuery(@el)).append paramView.render().el
 
   addStatusCode: (statusCode) ->
     # Render status codes
     statusCodeView = new StatusCodeView({model: statusCode, tagName: 'tr'})
-    $('.operation-status', $(@el)).append statusCodeView.render().el
+    jQuery('.operation-status', jQuery(@el)).append statusCodeView.render().el
   
   submitOperation: (e) ->
     e?.preventDefault()
     # Check for errors
-    form = $('.sandbox', $(@el))
+    form = jQuery('.sandbox', jQuery(@el))
     error_free = true
     form.find("input.required").each ->
-      $(@).removeClass "error"
-      if jQuery.trim($(@).val()) is ""
-        $(@).addClass "error"
-        $(@).wiggle
-          callback: => $(@).focus()
+      jQuery(@).removeClass "error"
+      if jQuery.trim(jQuery(@).val()) is ""
+        jQuery(@).addClass "error"
+        jQuery(@).wiggle
+          callback: => jQuery(@).focus()
         error_free = false
 
     # if error free submit it
@@ -97,10 +97,10 @@ class OperationView extends Backbone.View
         if(val? && jQuery.trim(val).length > 0)
           map[o.name] = val
 
-      opts.responseContentType = $("div select[name=responseContentType]", $(@el)).val()
-      opts.requestContentType = $("div select[name=parameterContentType]", $(@el)).val()
+      opts.responseContentType = jQuery("div select[name=responseContentType]", jQuery(@el)).val()
+      opts.requestContentType = jQuery("div select[name=parameterContentType]", jQuery(@el)).val()
 
-      $(".response_throbber", $(@el)).show()
+      jQuery(".response_throbber", jQuery(@el)).show()
       if isFileUpload
         @handleFileUpload map, form
       else
@@ -133,7 +133,7 @@ class OperationView extends Backbone.View
 
     # add files
     for el in form.find('input[type~="file"]')
-      bodyParam.append($(el).attr('name'), el.files[0])
+      bodyParam.append(jQuery(el).attr('name'), el.files[0])
 
     console.log(bodyParam)
 
@@ -144,7 +144,7 @@ class OperationView extends Backbone.View
       else
         @model.urlify(map, true)
 
-    $(".request_url", $(@el)).html "<pre>" + @invocationUrl + "</pre>"
+    jQuery(".request_url", jQuery(@el)).html "<pre>" + @invocationUrl + "</pre>"
 
     obj = 
       type: @model.method
@@ -194,14 +194,14 @@ class OperationView extends Backbone.View
   # handler for hide response link
   hideResponse: (e) ->
     e?.preventDefault()
-    $(".response", $(@el)).slideUp()
-    $(".response_hider", $(@el)).fadeOut()
+    jQuery(".response", jQuery(@el)).slideUp()
+    jQuery(".response_hider", jQuery(@el)).fadeOut()
 
 
   # Show response from server
   showResponse: (response) ->
     prettyJson = JSON.stringify(response, null, "\t").replace(/\n/g, "<br>")
-    $(".response_body", $(@el)).html escape(prettyJson)
+    jQuery(".response_body", jQuery(@el)).html escape(prettyJson)
 
   # Show error from server
   showErrorStatus: (data, parent) ->
@@ -279,34 +279,34 @@ class OperationView extends Backbone.View
     contentType = headers["Content-Type"]
 
     if content == undefined
-      code = $('<code />').text("no content")
-      pre = $('<pre class="json" />').append(code)
+      code = jQuery('<code />').text("no content")
+      pre = jQuery('<pre class="json" />').append(code)
     else if contentType.indexOf("application/json") == 0 || contentType.indexOf("application/hal+json") == 0
-      code = $('<code />').text(JSON.stringify(JSON.parse(content), null, 2))
-      pre = $('<pre class="json" />').append(code)
+      code = jQuery('<code />').text(JSON.stringify(JSON.parse(content), null, 2))
+      pre = jQuery('<pre class="json" />').append(code)
     else if contentType.indexOf("application/xml") == 0
-      code = $('<code />').text(@formatXml(content))
-      pre = $('<pre class="xml" />').append(code)
+      code = jQuery('<code />').text(@formatXml(content))
+      pre = jQuery('<pre class="xml" />').append(code)
     else if contentType.indexOf("text/html") == 0
-      code = $('<code />').html(content)
-      pre = $('<pre class="xml" />').append(code)
+      code = jQuery('<code />').html(content)
+      pre = jQuery('<pre class="xml" />').append(code)
     else if contentType.indexOf("image/") == 0
-      pre = $('<img>').attr('src',data.request.url)
+      pre = jQuery('<img>').attr('src',data.request.url)
     else
       # don't know what to render!
-      code = $('<code />').text(content)
-      pre = $('<pre class="json" />').append(code)
+      code = jQuery('<code />').text(content)
+      pre = jQuery('<pre class="json" />').append(code)
 
     response_body = pre
-    $(".request_url", $(@el)).html "<pre>" + data.request.url + "</pre>"
-    $(".response_code", $(@el)).html "<pre>" + data.status + "</pre>"
-    $(".response_body", $(@el)).html response_body
-    $(".response_headers", $(@el)).html "<pre>" + JSON.stringify(data.getHeaders(), null, "  ").replace(/\n/g, "<br>") + "</pre>"
-    $(".response", $(@el)).slideDown()
-    $(".response_hider", $(@el)).show()
-    $(".response_throbber", $(@el)).hide()
-    hljs.highlightBlock($('.response_body', $(@el))[0])
+    jQuery(".request_url", jQuery(@el)).html "<pre>" + data.request.url + "</pre>"
+    jQuery(".response_code", jQuery(@el)).html "<pre>" + data.status + "</pre>"
+    jQuery(".response_body", jQuery(@el)).html response_body
+    jQuery(".response_headers", jQuery(@el)).html "<pre>" + JSON.stringify(data.getHeaders(), null, "  ").replace(/\n/g, "<br>") + "</pre>"
+    jQuery(".response", jQuery(@el)).slideDown()
+    jQuery(".response_hider", jQuery(@el)).show()
+    jQuery(".response_throbber", jQuery(@el)).hide()
+    hljs.highlightBlock(jQuery('.response_body', jQuery(@el))[0])
 
   toggleOperationContent: ->
-    elem = $('#' + Docs.escapeResourceName(@model.resourceName) + "_" + @model.nickname + "_" + @model.method + "_" + @model.number + "_content")
+    elem = jQuery('#' + Docs.escapeResourceName(@model.resourceName) + "_" + @model.nickname + "_" + @model.method + "_" + @model.number + "_content")
     if elem.is(':visible') then Docs.collapseOperation(elem) else Docs.expandOperation(elem)

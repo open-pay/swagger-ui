@@ -7,7 +7,7 @@ class ParameterView extends Backbone.View
     @model.isFile = true if type.toLowerCase() == 'file'
 
     template = @template()
-    $(@el).html(template(@model))
+    jQuery(@el).html(template(@model))
 
     signatureModel =
       sampleJSON: @model.sampleJSON
@@ -16,9 +16,9 @@ class ParameterView extends Backbone.View
 
     if @model.sampleJSON
       signatureView = new SignatureView({model: signatureModel, tagName: 'div'})
-      $('.model-signature', $(@el)).append signatureView.render().el
+      jQuery('.model-signature', jQuery(@el)).append signatureView.render().el
     else
-      $('.model-signature', $(@el)).html(@model.signature)
+      jQuery('.model-signature', jQuery(@el)).html(@model.signature)
 
     isParam = false
 
@@ -32,11 +32,11 @@ class ParameterView extends Backbone.View
 
     if isParam
       parameterContentTypeView = new ParameterContentTypeView({model: contentTypeModel})
-      $('.parameter-content-type', $(@el)).append parameterContentTypeView.render().el
+      jQuery('.parameter-content-type', jQuery(@el)).append parameterContentTypeView.render().el
 
     else
       responseContentTypeView = new ResponseContentTypeView({model: contentTypeModel})
-      $('.response-content-type', $(@el)).append responseContentTypeView.render().el
+      jQuery('.response-content-type', jQuery(@el)).append responseContentTypeView.render().el
 
     @
 

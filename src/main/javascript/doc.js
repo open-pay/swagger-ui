@@ -1,46 +1,46 @@
-$(function() {
+jQuery(function() {
 
 	// Helper function for vertically aligning DOM elements
 	// http://www.seodenver.com/simple-vertical-align-plugin-for-jquery/
-	$.fn.vAlign = function() {
+	jQuery.fn.vAlign = function() {
 		return this.each(function(i){
-		var ah = $(this).height();
-		var ph = $(this).parent().height();
+		var ah = jQuery(this).height();
+		var ph = jQuery(this).parent().height();
 		var mh = (ph - ah) / 2;
-		$(this).css('margin-top', mh);
+		jQuery(this).css('margin-top', mh);
 		});
 	};
 
-	$.fn.stretchFormtasticInputWidthToParent = function() {
+	jQuery.fn.stretchFormtasticInputWidthToParent = function() {
 		return this.each(function(i){
-		var p_width = $(this).closest("form").innerWidth();
-		var p_padding = parseInt($(this).closest("form").css('padding-left') ,10) + parseInt($(this).closest("form").css('padding-right'), 10);
-		var this_padding = parseInt($(this).css('padding-left'), 10) + parseInt($(this).css('padding-right'), 10);
-		$(this).css('width', p_width - p_padding - this_padding);
+		var p_width = jQuery(this).closest("form").innerWidth();
+		var p_padding = parseInt(jQuery(this).closest("form").css('padding-left') ,10) + parseInt(jQuery(this).closest("form").css('padding-right'), 10);
+		var this_padding = parseInt(jQuery(this).css('padding-left'), 10) + parseInt(jQuery(this).css('padding-right'), 10);
+		jQuery(this).css('width', p_width - p_padding - this_padding);
 		});
 	};
 
-	$('form.formtastic li.string input, form.formtastic textarea').stretchFormtasticInputWidthToParent();
+	jQuery('form.formtastic li.string input, form.formtastic textarea').stretchFormtasticInputWidthToParent();
 
 	// Vertically center these paragraphs
 	// Parent may need a min-height for this to work..
-	$('ul.downplayed li div.content p').vAlign();
+	jQuery('ul.downplayed li div.content p').vAlign();
 
 	// When a sandbox form is submitted..
-	$("form.sandbox").submit(function(){
+	jQuery("form.sandbox").submit(function(){
 
 		var error_free = true;
 
 		// Cycle through the forms required inputs
- 		$(this).find("input.required").each(function() {
+ 		jQuery(this).find("input.required").each(function() {
 
 			// Remove any existing error styles from the input
-			$(this).removeClass('error');
+			jQuery(this).removeClass('error');
 
 			// Tack the error style on if the input is empty..
-			if ($(this).val() == '') {
-				$(this).addClass('error');
-				$(this).wiggle();
+			if (jQuery(this).val() == '') {
+				jQuery(this).addClass('error');
+				jQuery(this).wiggle();
 				error_free = false;
 			}
 
@@ -52,9 +52,9 @@ $(function() {
 });
 
 function clippyCopiedCallback(a) {
-  $('#api_key_copied').fadeIn().delay(1000).fadeOut();
+  jQuery('#api_key_copied').fadeIn().delay(1000).fadeOut();
 
-  // var b = $("#clippy_tooltip_" + a);
+  // var b = jQuery("#clippy_tooltip_" + a);
   // b.length != 0 && (b.attr("title", "copied!").trigger("tipsy.reload"), setTimeout(function() {
   //   b.attr("title", "copy to clipboard")
   // },
@@ -80,7 +80,7 @@ var Docs = {
 
 		// If shebang has an operation nickname in it..
 		// e.g. /docs/#!/words/get_search
-		var fragments = $.param.fragment().split('/');
+		var fragments = jQuery.param.fragment().split('/');
 		fragments.shift(); // get rid of the bang
 
 		switch (fragments.length) {
@@ -90,7 +90,7 @@ var Docs = {
 				var dom_id = 'resource_' + fragments[0];
 
 				Docs.expandEndpointListForResource(fragments[0]);
-				$("#"+dom_id).slideto({highlight: false});
+				jQuery("#"+dom_id).slideto({highlight: false});
 				break;
 			case 2:
 				// Refer to the endpoint DOM element, e.g. #words_get_search
@@ -98,7 +98,7 @@ var Docs = {
 
                 // Expand Resource
                 Docs.expandEndpointListForResource(fragments[0]);
-                $("#"+dom_id).slideto({highlight: false});
+                jQuery("#"+dom_id).slideto({highlight: false});
 
                 // Expand operation
 				var li_dom_id = fragments.join('_');
@@ -107,15 +107,15 @@ var Docs = {
 //                log("li_dom_id " + li_dom_id);
 //                log("li_content_dom_id " + li_content_dom_id);
 
-				Docs.expandOperation($('#'+li_content_dom_id));
-				$('#'+li_dom_id).slideto({highlight: false});
+				Docs.expandOperation(jQuery('#'+li_content_dom_id));
+				jQuery('#'+li_dom_id).slideto({highlight: false});
 				break;
 		}
 
 	},
 
 	toggleEndpointListForResource: function(resource) {
-		var elem = $('li#resource_' + Docs.escapeResourceName(resource) + ' ul.endpoints');
+		var elem = jQuery('li#resource_' + Docs.escapeResourceName(resource) + ' ul.endpoints');
 		if (elem.is(':visible')) {
 			Docs.collapseEndpointListForResource(resource);
 		} else {
@@ -127,22 +127,22 @@ var Docs = {
 	expandEndpointListForResource: function(resource) {
 		var resource = Docs.escapeResourceName(resource);
 		if (resource == '') {
-			$('.resource ul.endpoints').slideDown();
+			jQuery('.resource ul.endpoints').slideDown();
 			return;
 		}
 		
-		$('li#resource_' + resource).addClass('active');
+		jQuery('li#resource_' + resource).addClass('active');
 
-		var elem = $('li#resource_' + resource + ' ul.endpoints');
+		var elem = jQuery('li#resource_' + resource + ' ul.endpoints');
 		elem.slideDown();
 	},
 
 	// Collapse resource and mark as explicitly closed
 	collapseEndpointListForResource: function(resource) {
 		var resource = Docs.escapeResourceName(resource);
-		$('li#resource_' + resource).removeClass('active');
+		jQuery('li#resource_' + resource).removeClass('active');
 
-		var elem = $('li#resource_' + resource + ' ul.endpoints');
+		var elem = jQuery('li#resource_' + resource + ' ul.endpoints');
 		elem.slideUp();
 	},
 
@@ -151,12 +151,12 @@ var Docs = {
 		Docs.expandEndpointListForResource(resource);
 		
 		if (resource == '') {
-			$('.resource ul.endpoints li.operation div.content').slideDown();
+			jQuery('.resource ul.endpoints li.operation div.content').slideDown();
 			return;
 		}
 
-		$('li#resource_' + Docs.escapeResourceName(resource) + ' li.operation div.content').each(function() {
-			Docs.expandOperation($(this));
+		jQuery('li#resource_' + Docs.escapeResourceName(resource) + ' li.operation div.content').each(function() {
+			Docs.expandOperation(jQuery(this));
 		});
 	},
 
@@ -164,8 +164,8 @@ var Docs = {
 		// Make sure the resource container is open..
 		Docs.expandEndpointListForResource(resource);
 
-		$('li#resource_' + Docs.escapeResourceName(resource) + ' li.operation div.content').each(function() {
-			Docs.collapseOperation($(this));
+		jQuery('li#resource_' + Docs.escapeResourceName(resource) + ' li.operation div.content').each(function() {
+			Docs.collapseOperation(jQuery(this));
 		});
 	},
 
