@@ -44,7 +44,7 @@ class OperationView extends Backbone.View
     jQuery('.response-content-type', jQuery(@el)).append responseContentTypeView.render().el
 
     # Render each parameter
-    @addParameter param, contentTypeModel.consumes for param in @model.parameters
+    @addParameter param, contentTypeModel.consumes for param in @model.parameters when param.name != 'merchantId'
 
     # Render each response code
     @addStatusCode statusCode for statusCode in @model.responseMessages
@@ -75,6 +75,15 @@ class OperationView extends Backbone.View
           callback: => jQuery(@).focus()
         error_free = false
 
+    merchantId = jQuery("#input_merchantId").val()
+    if jQuery.trim(merchantId) is ""
+      jQuery("#input_merchantId").addClass "error"
+      jQuery("#input_merchantId").focus()
+      jQuery("#input_merchantId").wiggle
+        callback: => jQuery("#input_merchantId").focus()
+      error_free = false
+
+
     # if error free submit it
     if error_free
       map = {}
@@ -97,6 +106,7 @@ class OperationView extends Backbone.View
         if(val? && jQuery.trim(val).length > 0)
           map[o.name] = val
 
+      map["merchantId"] = merchantId
       opts.responseContentType = jQuery("div select[name=responseContentType]", jQuery(@el)).val()
       opts.requestContentType = jQuery("div select[name=parameterContentType]", jQuery(@el)).val()
 
