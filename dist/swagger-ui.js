@@ -1,46 +1,46 @@
-$(function() {
+jQuery(function() {
 
 	// Helper function for vertically aligning DOM elements
 	// http://www.seodenver.com/simple-vertical-align-plugin-for-jquery/
-	$.fn.vAlign = function() {
+	jQuery.fn.vAlign = function() {
 		return this.each(function(i){
-		var ah = $(this).height();
-		var ph = $(this).parent().height();
+		var ah = jQuery(this).height();
+		var ph = jQuery(this).parent().height();
 		var mh = (ph - ah) / 2;
-		$(this).css('margin-top', mh);
+		jQuery(this).css('margin-top', mh);
 		});
 	};
 
-	$.fn.stretchFormtasticInputWidthToParent = function() {
+	jQuery.fn.stretchFormtasticInputWidthToParent = function() {
 		return this.each(function(i){
-		var p_width = $(this).closest("form").innerWidth();
-		var p_padding = parseInt($(this).closest("form").css('padding-left') ,10) + parseInt($(this).closest("form").css('padding-right'), 10);
-		var this_padding = parseInt($(this).css('padding-left'), 10) + parseInt($(this).css('padding-right'), 10);
-		$(this).css('width', p_width - p_padding - this_padding);
+		var p_width = jQuery(this).closest("form").innerWidth();
+		var p_padding = parseInt(jQuery(this).closest("form").css('padding-left') ,10) + parseInt(jQuery(this).closest("form").css('padding-right'), 10);
+		var this_padding = parseInt(jQuery(this).css('padding-left'), 10) + parseInt(jQuery(this).css('padding-right'), 10);
+		jQuery(this).css('width', p_width - p_padding - this_padding);
 		});
 	};
 
-	$('form.formtastic li.string input, form.formtastic textarea').stretchFormtasticInputWidthToParent();
+	jQuery('form.formtastic li.string input, form.formtastic textarea').stretchFormtasticInputWidthToParent();
 
 	// Vertically center these paragraphs
 	// Parent may need a min-height for this to work..
-	$('ul.downplayed li div.content p').vAlign();
+	jQuery('ul.downplayed li div.content p').vAlign();
 
 	// When a sandbox form is submitted..
-	$("form.sandbox").submit(function(){
+	jQuery("form.sandbox").submit(function(){
 
 		var error_free = true;
 
 		// Cycle through the forms required inputs
- 		$(this).find("input.required").each(function() {
+ 		jQuery(this).find("input.required").each(function() {
 
 			// Remove any existing error styles from the input
-			$(this).removeClass('error');
+			jQuery(this).removeClass('error');
 
 			// Tack the error style on if the input is empty..
-			if ($(this).val() == '') {
-				$(this).addClass('error');
-				$(this).wiggle();
+			if (jQuery(this).val() == '') {
+				jQuery(this).addClass('error');
+				jQuery(this).wiggle();
 				error_free = false;
 			}
 
@@ -52,9 +52,9 @@ $(function() {
 });
 
 function clippyCopiedCallback(a) {
-  $('#api_key_copied').fadeIn().delay(1000).fadeOut();
+  jQuery('#api_key_copied').fadeIn().delay(1000).fadeOut();
 
-  // var b = $("#clippy_tooltip_" + a);
+  // var b = jQuery("#clippy_tooltip_" + a);
   // b.length != 0 && (b.attr("title", "copied!").trigger("tipsy.reload"), setTimeout(function() {
   //   b.attr("title", "copy to clipboard")
   // },
@@ -80,7 +80,7 @@ var Docs = {
 
 		// If shebang has an operation nickname in it..
 		// e.g. /docs/#!/words/get_search
-		var fragments = $.param.fragment().split('/');
+		var fragments = jQuery.param.fragment().split('/');
 		fragments.shift(); // get rid of the bang
 
 		switch (fragments.length) {
@@ -90,7 +90,7 @@ var Docs = {
 				var dom_id = 'resource_' + fragments[0];
 
 				Docs.expandEndpointListForResource(fragments[0]);
-				$("#"+dom_id).slideto({highlight: false});
+				jQuery("#"+dom_id).slideto({highlight: false});
 				break;
 			case 2:
 				// Refer to the endpoint DOM element, e.g. #words_get_search
@@ -98,7 +98,7 @@ var Docs = {
 
                 // Expand Resource
                 Docs.expandEndpointListForResource(fragments[0]);
-                $("#"+dom_id).slideto({highlight: false});
+                jQuery("#"+dom_id).slideto({highlight: false});
 
                 // Expand operation
 				var li_dom_id = fragments.join('_');
@@ -107,15 +107,15 @@ var Docs = {
 //                log("li_dom_id " + li_dom_id);
 //                log("li_content_dom_id " + li_content_dom_id);
 
-				Docs.expandOperation($('#'+li_content_dom_id));
-				$('#'+li_dom_id).slideto({highlight: false});
+				Docs.expandOperation(jQuery('#'+li_content_dom_id));
+				jQuery('#'+li_dom_id).slideto({highlight: false});
 				break;
 		}
 
 	},
 
 	toggleEndpointListForResource: function(resource) {
-		var elem = $('li#resource_' + Docs.escapeResourceName(resource) + ' ul.endpoints');
+		var elem = jQuery('li#resource_' + Docs.escapeResourceName(resource) + ' ul.endpoints');
 		if (elem.is(':visible')) {
 			Docs.collapseEndpointListForResource(resource);
 		} else {
@@ -127,22 +127,22 @@ var Docs = {
 	expandEndpointListForResource: function(resource) {
 		var resource = Docs.escapeResourceName(resource);
 		if (resource == '') {
-			$('.resource ul.endpoints').slideDown();
+			jQuery('.resource ul.endpoints').slideDown();
 			return;
 		}
 		
-		$('li#resource_' + resource).addClass('active');
+		jQuery('li#resource_' + resource).addClass('active');
 
-		var elem = $('li#resource_' + resource + ' ul.endpoints');
+		var elem = jQuery('li#resource_' + resource + ' ul.endpoints');
 		elem.slideDown();
 	},
 
 	// Collapse resource and mark as explicitly closed
 	collapseEndpointListForResource: function(resource) {
 		var resource = Docs.escapeResourceName(resource);
-		$('li#resource_' + resource).removeClass('active');
+		jQuery('li#resource_' + resource).removeClass('active');
 
-		var elem = $('li#resource_' + resource + ' ul.endpoints');
+		var elem = jQuery('li#resource_' + resource + ' ul.endpoints');
 		elem.slideUp();
 	},
 
@@ -151,12 +151,12 @@ var Docs = {
 		Docs.expandEndpointListForResource(resource);
 		
 		if (resource == '') {
-			$('.resource ul.endpoints li.operation div.content').slideDown();
+			jQuery('.resource ul.endpoints li.operation div.content').slideDown();
 			return;
 		}
 
-		$('li#resource_' + Docs.escapeResourceName(resource) + ' li.operation div.content').each(function() {
-			Docs.expandOperation($(this));
+		jQuery('li#resource_' + Docs.escapeResourceName(resource) + ' li.operation div.content').each(function() {
+			Docs.expandOperation(jQuery(this));
 		});
 	},
 
@@ -164,8 +164,8 @@ var Docs = {
 		// Make sure the resource container is open..
 		Docs.expandEndpointListForResource(resource);
 
-		$('li#resource_' + Docs.escapeResourceName(resource) + ' li.operation div.content').each(function() {
-			Docs.collapseOperation($(this));
+		jQuery('li#resource_' + Docs.escapeResourceName(resource) + ' li.operation div.content').each(function() {
+			Docs.collapseOperation(jQuery(this));
 		});
 	},
 
@@ -352,7 +352,7 @@ function program9(depth0,data) {
 function program11(depth0,data) {
   
   
-  return "\n          <div class='sandbox_header'>\n            <input class='submit' name='commit' type='button' value='Try it out!' />\n            <a href='#' class='response_hider' style='display:none'>Hide Response</a>\n            <img alt='Throbber' class='response_throbber' src='images/throbber.gif' style='display:none' />\n          </div>\n          ";
+  return "\n          <div class='sandbox_header'>\n            <input class='submit' name='commit' type='button' value='Try it out!' />\n            <a href='#' class='response_hider' style='display:none'>Hide Response</a>\n            <img alt='Throbber' class='response_throbber' src='http://public.openpay.mx/images/throbber.gif' style='display:none' />\n          </div>\n          ";
   }
 
   buffer += "\n  <ul class='operations' >\n    <li class='";
@@ -1182,18 +1182,18 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 
 
 
-// Generated by CoffeeScript 1.6.3
+// Generated by CoffeeScript 1.5.0
 (function() {
-  var ContentTypeView, HeaderView, MainView, OperationView, ParameterContentTypeView, ParameterView, ResourceView, ResponseContentTypeView, SignatureView, StatusCodeView, SwaggerUi, _ref, _ref1, _ref10, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _ref8, _ref9,
+  var ContentTypeView, HeaderView, MainView, OperationView, ParameterContentTypeView, ParameterView, ResourceView, ResponseContentTypeView, SignatureView, StatusCodeView, SwaggerUi,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
   SwaggerUi = (function(_super) {
+
     __extends(SwaggerUi, _super);
 
     function SwaggerUi() {
-      _ref = SwaggerUi.__super__.constructor.apply(this, arguments);
-      return _ref;
+      SwaggerUi.__super__.constructor.apply(this, arguments);
     }
 
     SwaggerUi.prototype.dom_id = "swagger_ui";
@@ -1215,8 +1215,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
         this.dom_id = options.dom_id;
         delete options.dom_id;
       }
-      if ($('#' + this.dom_id) == null) {
-        $('body').append('<div id="' + this.dom_id + '"></div>');
+      if (jQuery('#' + this.dom_id) == null) {
+        jQuery('body').append('<div id="' + this.dom_id + '"></div>');
       }
       this.options = options;
       this.options.success = function() {
@@ -1229,7 +1229,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
         return _this.onLoadFailure(d);
       };
       this.headerView = new HeaderView({
-        el: $('#header')
+        el: jQuery('#header')
       });
       return this.headerView.on('update-swagger-ui', function(data) {
         return _this.updateSwaggerUi(data);
@@ -1242,9 +1242,9 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     };
 
     SwaggerUi.prototype.load = function() {
-      var url, _ref1;
-      if ((_ref1 = this.mainView) != null) {
-        _ref1.clear();
+      var url, _ref;
+      if ((_ref = this.mainView) != null) {
+        _ref.clear();
       }
       url = this.options.url;
       if (url.indexOf("http") !== 0) {
@@ -1262,7 +1262,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
       this.showMessage('Finished Loading Resource Information. Rendering Swagger UI...');
       this.mainView = new MainView({
         model: this.api,
-        el: $('#' + this.dom_id)
+        el: jQuery('#' + this.dom_id)
       }).render();
       this.showMessage();
       switch (this.options.docExpansion) {
@@ -1296,9 +1296,9 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
       if (data == null) {
         data = '';
       }
-      $('#message-bar').removeClass('message-fail');
-      $('#message-bar').addClass('message-success');
-      return $('#message-bar').html(data);
+      jQuery('#message-bar').removeClass('message-fail');
+      jQuery('#message-bar').addClass('message-success');
+      return jQuery('#message-bar').html(data);
     };
 
     SwaggerUi.prototype.onLoadFailure = function(data) {
@@ -1306,9 +1306,9 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
       if (data == null) {
         data = '';
       }
-      $('#message-bar').removeClass('message-success');
-      $('#message-bar').addClass('message-fail');
-      val = $('#message-bar').html(data);
+      jQuery('#message-bar').removeClass('message-success');
+      jQuery('#message-bar').addClass('message-fail');
+      val = jQuery('#message-bar').html(data);
       if (this.options.onFailure != null) {
         this.options.onFailure(data);
       }
@@ -1322,11 +1322,11 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   window.SwaggerUi = SwaggerUi;
 
   HeaderView = (function(_super) {
+
     __extends(HeaderView, _super);
 
     function HeaderView() {
-      _ref1 = HeaderView.__super__.constructor.apply(this, arguments);
-      return _ref1;
+      HeaderView.__super__.constructor.apply(this, arguments);
     }
 
     HeaderView.prototype.events = {
@@ -1362,8 +1362,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
         e.preventDefault();
       }
       return this.trigger('update-swagger-ui', {
-        url: $('#input_baseUrl').val(),
-        apiKey: $('#input_apiKey').val()
+        url: jQuery('#input_baseUrl').val(),
+        apiKey: jQuery('#input_apiKey').val()
       });
     };
 
@@ -1371,7 +1371,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
       if (trigger == null) {
         trigger = false;
       }
-      $('#input_baseUrl').val(url);
+      jQuery('#input_baseUrl').val(url);
       if (trigger) {
         return this.trigger('update-swagger-ui', {
           url: url
@@ -1384,21 +1384,21 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   })(Backbone.View);
 
   MainView = (function(_super) {
+
     __extends(MainView, _super);
 
     function MainView() {
-      _ref2 = MainView.__super__.constructor.apply(this, arguments);
-      return _ref2;
+      MainView.__super__.constructor.apply(this, arguments);
     }
 
     MainView.prototype.initialize = function() {};
 
     MainView.prototype.render = function() {
-      var resource, _i, _len, _ref3;
-      $(this.el).html(Handlebars.templates.main(this.model));
-      _ref3 = this.model.apisArray;
-      for (_i = 0, _len = _ref3.length; _i < _len; _i++) {
-        resource = _ref3[_i];
+      var resource, _i, _len, _ref;
+      jQuery(this.el).html(Handlebars.templates.main(this.model));
+      _ref = this.model.apisArray;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        resource = _ref[_i];
         this.addResource(resource);
       }
       return this;
@@ -1412,11 +1412,11 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
         id: 'resource_' + resource.name,
         className: 'resource'
       });
-      return $('#resources').append(resourceView.render().el);
+      return jQuery('#resources').append(resourceView.render().el);
     };
 
     MainView.prototype.clear = function() {
-      return $(this.el).html('');
+      return jQuery(this.el).html('');
     };
 
     return MainView;
@@ -1424,23 +1424,23 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   })(Backbone.View);
 
   ResourceView = (function(_super) {
+
     __extends(ResourceView, _super);
 
     function ResourceView() {
-      _ref3 = ResourceView.__super__.constructor.apply(this, arguments);
-      return _ref3;
+      ResourceView.__super__.constructor.apply(this, arguments);
     }
 
     ResourceView.prototype.initialize = function() {};
 
     ResourceView.prototype.render = function() {
-      var operation, _i, _len, _ref4;
+      var operation, _i, _len, _ref;
       console.log(this.model.description);
-      $(this.el).html(Handlebars.templates.resource(this.model));
+      jQuery(this.el).html(Handlebars.templates.resource(this.model));
       this.number = 0;
-      _ref4 = this.model.operationsArray;
-      for (_i = 0, _len = _ref4.length; _i < _len; _i++) {
-        operation = _ref4[_i];
+      _ref = this.model.operationsArray;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        operation = _ref[_i];
         this.addOperation(operation);
       }
       return this;
@@ -1454,7 +1454,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
         tagName: 'li',
         className: 'endpoint'
       });
-      $('.endpoints', $(this.el)).append(operationView.render().el);
+      jQuery('.endpoints', jQuery(this.el)).append(operationView.render().el);
       return this.number++;
     };
 
@@ -1463,11 +1463,11 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   })(Backbone.View);
 
   OperationView = (function(_super) {
+
     __extends(OperationView, _super);
 
     function OperationView() {
-      _ref4 = OperationView.__super__.constructor.apply(this, arguments);
-      return _ref4;
+      OperationView.__super__.constructor.apply(this, arguments);
     }
 
     OperationView.prototype.invocationUrl = null;
@@ -1482,12 +1482,12 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     OperationView.prototype.initialize = function() {};
 
     OperationView.prototype.render = function() {
-      var contentTypeModel, isMethodSubmissionSupported, param, responseContentTypeView, responseSignatureView, signatureModel, statusCode, type, _i, _j, _k, _len, _len1, _len2, _ref5, _ref6, _ref7;
+      var contentTypeModel, isMethodSubmissionSupported, param, responseContentTypeView, responseSignatureView, signatureModel, statusCode, type, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2;
       isMethodSubmissionSupported = true;
       if (!isMethodSubmissionSupported) {
         this.model.isReadOnly = true;
       }
-      $(this.el).html(Handlebars.templates.operation(this.model));
+      jQuery(this.el).html(Handlebars.templates.operation(this.model));
       if (this.model.responseClassSignature && this.model.responseClassSignature !== 'string') {
         signatureModel = {
           sampleJSON: this.model.responseSampleJSON,
@@ -1498,18 +1498,18 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
           model: signatureModel,
           tagName: 'div'
         });
-        $('.model-signature', $(this.el)).append(responseSignatureView.render().el);
+        jQuery('.model-signature', jQuery(this.el)).append(responseSignatureView.render().el);
       } else {
-        $('.model-signature', $(this.el)).html(this.model.type);
+        jQuery('.model-signature', jQuery(this.el)).html(this.model.type);
       }
       contentTypeModel = {
         isParam: false
       };
       contentTypeModel.consumes = this.model.consumes;
       contentTypeModel.produces = this.model.produces;
-      _ref5 = this.model.parameters;
-      for (_i = 0, _len = _ref5.length; _i < _len; _i++) {
-        param = _ref5[_i];
+      _ref = this.model.parameters;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        param = _ref[_i];
         type = param.type || param.dataType;
         if (type.toLowerCase() === 'file') {
           if (!contentTypeModel.consumes) {
@@ -1521,15 +1521,17 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
       responseContentTypeView = new ResponseContentTypeView({
         model: contentTypeModel
       });
-      $('.response-content-type', $(this.el)).append(responseContentTypeView.render().el);
-      _ref6 = this.model.parameters;
-      for (_j = 0, _len1 = _ref6.length; _j < _len1; _j++) {
-        param = _ref6[_j];
-        this.addParameter(param, contentTypeModel.consumes);
+      jQuery('.response-content-type', jQuery(this.el)).append(responseContentTypeView.render().el);
+      _ref1 = this.model.parameters;
+      for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+        param = _ref1[_j];
+        if (param.name !== 'merchantId') {
+          this.addParameter(param, contentTypeModel.consumes);
+        }
       }
-      _ref7 = this.model.responseMessages;
-      for (_k = 0, _len2 = _ref7.length; _k < _len2; _k++) {
-        statusCode = _ref7[_k];
+      _ref2 = this.model.responseMessages;
+      for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
+        statusCode = _ref2[_k];
         this.addStatusCode(statusCode);
       }
       return this;
@@ -1543,7 +1545,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
         tagName: 'tr',
         readOnly: this.model.isReadOnly
       });
-      return $('.operation-params', $(this.el)).append(paramView.render().el);
+      return jQuery('.operation-params', jQuery(this.el)).append(paramView.render().el);
     };
 
     OperationView.prototype.addStatusCode = function(statusCode) {
@@ -1552,38 +1554,50 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
         model: statusCode,
         tagName: 'tr'
       });
-      return $('.operation-status', $(this.el)).append(statusCodeView.render().el);
+      return jQuery('.operation-status', jQuery(this.el)).append(statusCodeView.render().el);
     };
 
     OperationView.prototype.submitOperation = function(e) {
-      var error_free, form, isFileUpload, map, o, opts, val, _i, _j, _k, _len, _len1, _len2, _ref5, _ref6, _ref7;
+      var error_free, form, isFileUpload, map, merchantId, o, opts, val, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2,
+        _this = this;
       if (e != null) {
         e.preventDefault();
       }
-      form = $('.sandbox', $(this.el));
+      form = jQuery('.sandbox', jQuery(this.el));
       error_free = true;
       form.find("input.required").each(function() {
         var _this = this;
-        $(this).removeClass("error");
-        if (jQuery.trim($(this).val()) === "") {
-          $(this).addClass("error");
-          $(this).wiggle({
+        jQuery(this).removeClass("error");
+        if (jQuery.trim(jQuery(this).val()) === "") {
+          jQuery(this).addClass("error");
+          jQuery(this).wiggle({
             callback: function() {
-              return $(_this).focus();
+              return jQuery(_this).focus();
             }
           });
           return error_free = false;
         }
       });
+      merchantId = jQuery("#input_merchantId").val();
+      if (jQuery.trim(merchantId) === "") {
+        jQuery("#input_merchantId").addClass("error");
+        jQuery("#input_merchantId").focus();
+        jQuery("#input_merchantId").wiggle({
+          callback: function() {
+            return jQuery("#input_merchantId").focus();
+          }
+        });
+        error_free = false;
+      }
       if (error_free) {
         map = {};
         opts = {
           parent: this
         };
         isFileUpload = false;
-        _ref5 = form.find("input");
-        for (_i = 0, _len = _ref5.length; _i < _len; _i++) {
-          o = _ref5[_i];
+        _ref = form.find("input");
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          o = _ref[_i];
           if ((o.value != null) && jQuery.trim(o.value).length > 0) {
             map[o.name] = o.value;
           }
@@ -1591,24 +1605,25 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
             isFileUpload = true;
           }
         }
-        _ref6 = form.find("textarea");
-        for (_j = 0, _len1 = _ref6.length; _j < _len1; _j++) {
-          o = _ref6[_j];
+        _ref1 = form.find("textarea");
+        for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+          o = _ref1[_j];
           if ((o.value != null) && jQuery.trim(o.value).length > 0) {
             map["body"] = o.value;
           }
         }
-        _ref7 = form.find("select");
-        for (_k = 0, _len2 = _ref7.length; _k < _len2; _k++) {
-          o = _ref7[_k];
+        _ref2 = form.find("select");
+        for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
+          o = _ref2[_k];
           val = this.getSelectedValue(o);
           if ((val != null) && jQuery.trim(val).length > 0) {
             map[o.name] = val;
           }
         }
-        opts.responseContentType = $("div select[name=responseContentType]", $(this.el)).val();
-        opts.requestContentType = $("div select[name=parameterContentType]", $(this.el)).val();
-        $(".response_throbber", $(this.el)).show();
+        map["merchantId"] = merchantId;
+        opts.responseContentType = jQuery("div select[name=responseContentType]", jQuery(this.el)).val();
+        opts.requestContentType = jQuery("div select[name=parameterContentType]", jQuery(this.el)).val();
+        jQuery(".response_throbber", jQuery(this.el)).show();
         if (isFileUpload) {
           return this.handleFileUpload(map, form);
         } else {
@@ -1622,41 +1637,41 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     };
 
     OperationView.prototype.handleFileUpload = function(map, form) {
-      var bodyParam, el, headerParams, o, obj, param, _i, _j, _k, _l, _len, _len1, _len2, _len3, _ref5, _ref6, _ref7, _ref8,
+      var bodyParam, el, headerParams, o, obj, param, _i, _j, _k, _l, _len, _len1, _len2, _len3, _ref, _ref1, _ref2, _ref3,
         _this = this;
       console.log("it's a file upload");
-      _ref5 = form.serializeArray();
-      for (_i = 0, _len = _ref5.length; _i < _len; _i++) {
-        o = _ref5[_i];
+      _ref = form.serializeArray();
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        o = _ref[_i];
         if ((o.value != null) && jQuery.trim(o.value).length > 0) {
           map[o.name] = o.value;
         }
       }
       bodyParam = new FormData();
-      _ref6 = this.model.parameters;
-      for (_j = 0, _len1 = _ref6.length; _j < _len1; _j++) {
-        param = _ref6[_j];
+      _ref1 = this.model.parameters;
+      for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+        param = _ref1[_j];
         if (param.paramType === 'form') {
           bodyParam.append(param.name, map[param.name]);
         }
       }
       headerParams = {};
-      _ref7 = this.model.parameters;
-      for (_k = 0, _len2 = _ref7.length; _k < _len2; _k++) {
-        param = _ref7[_k];
+      _ref2 = this.model.parameters;
+      for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
+        param = _ref2[_k];
         if (param.paramType === 'header') {
           headerParams[param.name] = map[param.name];
         }
       }
       console.log(headerParams);
-      _ref8 = form.find('input[type~="file"]');
-      for (_l = 0, _len3 = _ref8.length; _l < _len3; _l++) {
-        el = _ref8[_l];
-        bodyParam.append($(el).attr('name'), el.files[0]);
+      _ref3 = form.find('input[type~="file"]');
+      for (_l = 0, _len3 = _ref3.length; _l < _len3; _l++) {
+        el = _ref3[_l];
+        bodyParam.append(jQuery(el).attr('name'), el.files[0]);
       }
       console.log(bodyParam);
       this.invocationUrl = this.model.supportHeaderParams() ? (headerParams = this.model.getHeaderParams(map), this.model.urlify(map, false)) : this.model.urlify(map, true);
-      $(".request_url", $(this.el)).html("<pre>" + this.invocationUrl + "</pre>");
+      jQuery(".request_url", jQuery(this.el)).html("<pre>" + this.invocationUrl + "</pre>");
       obj = {
         type: this.model.method,
         url: this.invocationUrl,
@@ -1700,14 +1715,14 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     };
 
     OperationView.prototype.getSelectedValue = function(select) {
-      var opt, options, _i, _len, _ref5;
+      var opt, options, _i, _len, _ref;
       if (!select.multiple) {
         return select.value;
       } else {
         options = [];
-        _ref5 = select.options;
-        for (_i = 0, _len = _ref5.length; _i < _len; _i++) {
-          opt = _ref5[_i];
+        _ref = select.options;
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          opt = _ref[_i];
           if (opt.selected) {
             options.push(opt.value);
           }
@@ -1724,14 +1739,14 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
       if (e != null) {
         e.preventDefault();
       }
-      $(".response", $(this.el)).slideUp();
-      return $(".response_hider", $(this.el)).fadeOut();
+      jQuery(".response", jQuery(this.el)).slideUp();
+      return jQuery(".response_hider", jQuery(this.el)).fadeOut();
     };
 
     OperationView.prototype.showResponse = function(response) {
       var prettyJson;
       prettyJson = JSON.stringify(response, null, "\t").replace(/\n/g, "<br>");
-      return $(".response_body", $(this.el)).html(escape(prettyJson));
+      return jQuery(".response_body", jQuery(this.el)).html(escape(prettyJson));
     };
 
     OperationView.prototype.showErrorStatus = function(data, parent) {
@@ -1795,9 +1810,9 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
         padding = '';
         indent += transitions[fromTo];
         padding = ((function() {
-          var _j, _ref5, _results;
+          var _j, _ref, _results;
           _results = [];
-          for (j = _j = 0, _ref5 = indent; 0 <= _ref5 ? _j < _ref5 : _j > _ref5; j = 0 <= _ref5 ? ++_j : --_j) {
+          for (j = _j = 0, _ref = indent; 0 <= _ref ? _j < _ref : _j > _ref; j = 0 <= _ref ? ++_j : --_j) {
             _results.push('  ');
           }
           return _results;
@@ -1821,37 +1836,37 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
       headers = data.getHeaders();
       contentType = headers["Content-Type"];
       if (content === void 0) {
-        code = $('<code />').text("no content");
-        pre = $('<pre class="json" />').append(code);
+        code = jQuery('<code />').text("no content");
+        pre = jQuery('<pre class="json" />').append(code);
       } else if (contentType.indexOf("application/json") === 0 || contentType.indexOf("application/hal+json") === 0) {
-        code = $('<code />').text(JSON.stringify(JSON.parse(content), null, 2));
-        pre = $('<pre class="json" />').append(code);
+        code = jQuery('<code />').text(JSON.stringify(JSON.parse(content), null, 2));
+        pre = jQuery('<pre class="json" />').append(code);
       } else if (contentType.indexOf("application/xml") === 0) {
-        code = $('<code />').text(this.formatXml(content));
-        pre = $('<pre class="xml" />').append(code);
+        code = jQuery('<code />').text(this.formatXml(content));
+        pre = jQuery('<pre class="xml" />').append(code);
       } else if (contentType.indexOf("text/html") === 0) {
-        code = $('<code />').html(content);
-        pre = $('<pre class="xml" />').append(code);
+        code = jQuery('<code />').html(content);
+        pre = jQuery('<pre class="xml" />').append(code);
       } else if (contentType.indexOf("image/") === 0) {
-        pre = $('<img>').attr('src', data.request.url);
+        pre = jQuery('<img>').attr('src', data.request.url);
       } else {
-        code = $('<code />').text(content);
-        pre = $('<pre class="json" />').append(code);
+        code = jQuery('<code />').text(content);
+        pre = jQuery('<pre class="json" />').append(code);
       }
       response_body = pre;
-      $(".request_url", $(this.el)).html("<pre>" + data.request.url + "</pre>");
-      $(".response_code", $(this.el)).html("<pre>" + data.status + "</pre>");
-      $(".response_body", $(this.el)).html(response_body);
-      $(".response_headers", $(this.el)).html("<pre>" + JSON.stringify(data.getHeaders(), null, "  ").replace(/\n/g, "<br>") + "</pre>");
-      $(".response", $(this.el)).slideDown();
-      $(".response_hider", $(this.el)).show();
-      $(".response_throbber", $(this.el)).hide();
-      return hljs.highlightBlock($('.response_body', $(this.el))[0]);
+      jQuery(".request_url", jQuery(this.el)).html("<pre>" + data.request.url + "</pre>");
+      jQuery(".response_code", jQuery(this.el)).html("<pre>" + data.status + "</pre>");
+      jQuery(".response_body", jQuery(this.el)).html(response_body);
+      jQuery(".response_headers", jQuery(this.el)).html("<pre>" + JSON.stringify(data.getHeaders(), null, "  ").replace(/\n/g, "<br>") + "</pre>");
+      jQuery(".response", jQuery(this.el)).slideDown();
+      jQuery(".response_hider", jQuery(this.el)).show();
+      jQuery(".response_throbber", jQuery(this.el)).hide();
+      return hljs.highlightBlock(jQuery('.response_body', jQuery(this.el))[0]);
     };
 
     OperationView.prototype.toggleOperationContent = function() {
       var elem;
-      elem = $('#' + Docs.escapeResourceName(this.model.resourceName) + "_" + this.model.nickname + "_" + this.model.method + "_" + this.model.number + "_content");
+      elem = jQuery('#' + Docs.escapeResourceName(this.model.resourceName) + "_" + this.model.nickname + "_" + this.model.method + "_" + this.model.number + "_content");
       if (elem.is(':visible')) {
         return Docs.collapseOperation(elem);
       } else {
@@ -1864,11 +1879,11 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   })(Backbone.View);
 
   StatusCodeView = (function(_super) {
+
     __extends(StatusCodeView, _super);
 
     function StatusCodeView() {
-      _ref5 = StatusCodeView.__super__.constructor.apply(this, arguments);
-      return _ref5;
+      StatusCodeView.__super__.constructor.apply(this, arguments);
     }
 
     StatusCodeView.prototype.initialize = function() {};
@@ -1876,7 +1891,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     StatusCodeView.prototype.render = function() {
       var template;
       template = this.template();
-      $(this.el).html(template(this.model));
+      jQuery(this.el).html(template(this.model));
       return this;
     };
 
@@ -1889,11 +1904,11 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   })(Backbone.View);
 
   ParameterView = (function(_super) {
+
     __extends(ParameterView, _super);
 
     function ParameterView() {
-      _ref6 = ParameterView.__super__.constructor.apply(this, arguments);
-      return _ref6;
+      ParameterView.__super__.constructor.apply(this, arguments);
     }
 
     ParameterView.prototype.initialize = function() {};
@@ -1908,7 +1923,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
         this.model.isFile = true;
       }
       template = this.template();
-      $(this.el).html(template(this.model));
+      jQuery(this.el).html(template(this.model));
       signatureModel = {
         sampleJSON: this.model.sampleJSON,
         isParam: true,
@@ -1919,9 +1934,9 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
           model: signatureModel,
           tagName: 'div'
         });
-        $('.model-signature', $(this.el)).append(signatureView.render().el);
+        jQuery('.model-signature', jQuery(this.el)).append(signatureView.render().el);
       } else {
-        $('.model-signature', $(this.el)).html(this.model.signature);
+        jQuery('.model-signature', jQuery(this.el)).html(this.model.signature);
       }
       isParam = false;
       if (this.model.isBody) {
@@ -1935,12 +1950,12 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
         parameterContentTypeView = new ParameterContentTypeView({
           model: contentTypeModel
         });
-        $('.parameter-content-type', $(this.el)).append(parameterContentTypeView.render().el);
+        jQuery('.parameter-content-type', jQuery(this.el)).append(parameterContentTypeView.render().el);
       } else {
         responseContentTypeView = new ResponseContentTypeView({
           model: contentTypeModel
         });
-        $('.response-content-type', $(this.el)).append(responseContentTypeView.render().el);
+        jQuery('.response-content-type', jQuery(this.el)).append(responseContentTypeView.render().el);
       }
       return this;
     };
@@ -1970,11 +1985,11 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   })(Backbone.View);
 
   SignatureView = (function(_super) {
+
     __extends(SignatureView, _super);
 
     function SignatureView() {
-      _ref7 = SignatureView.__super__.constructor.apply(this, arguments);
-      return _ref7;
+      SignatureView.__super__.constructor.apply(this, arguments);
     }
 
     SignatureView.prototype.events = {
@@ -1988,11 +2003,11 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     SignatureView.prototype.render = function() {
       var template;
       template = this.template();
-      $(this.el).html(template(this.model));
+      jQuery(this.el).html(template(this.model));
       this.switchToDescription();
       this.isParam = this.model.isParam;
       if (this.isParam) {
-        $('.notice', $(this.el)).text('Click to set as parameter value');
+        jQuery('.notice', jQuery(this.el)).text('Click to set as parameter value');
       }
       return this;
     };
@@ -2005,20 +2020,20 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
       if (e != null) {
         e.preventDefault();
       }
-      $(".snippet", $(this.el)).hide();
-      $(".description", $(this.el)).show();
-      $('.description-link', $(this.el)).addClass('selected');
-      return $('.snippet-link', $(this.el)).removeClass('selected');
+      jQuery(".snippet", jQuery(this.el)).hide();
+      jQuery(".description", jQuery(this.el)).show();
+      jQuery('.description-link', jQuery(this.el)).addClass('selected');
+      return jQuery('.snippet-link', jQuery(this.el)).removeClass('selected');
     };
 
     SignatureView.prototype.switchToSnippet = function(e) {
       if (e != null) {
         e.preventDefault();
       }
-      $(".description", $(this.el)).hide();
-      $(".snippet", $(this.el)).show();
-      $('.snippet-link', $(this.el)).addClass('selected');
-      return $('.description-link', $(this.el)).removeClass('selected');
+      jQuery(".description", jQuery(this.el)).hide();
+      jQuery(".snippet", jQuery(this.el)).show();
+      jQuery('.snippet-link', jQuery(this.el)).addClass('selected');
+      return jQuery('.description-link', jQuery(this.el)).removeClass('selected');
     };
 
     SignatureView.prototype.snippetToTextArea = function(e) {
@@ -2027,8 +2042,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
         if (e != null) {
           e.preventDefault();
         }
-        textArea = $('textarea', $(this.el.parentNode.parentNode.parentNode));
-        if ($.trim(textArea.val()) === '') {
+        textArea = jQuery('textarea', jQuery(this.el.parentNode.parentNode.parentNode));
+        if (jQuery.trim(textArea.val()) === '') {
           return textArea.val(this.model.sampleJSON);
         }
       }
@@ -2039,11 +2054,11 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   })(Backbone.View);
 
   ContentTypeView = (function(_super) {
+
     __extends(ContentTypeView, _super);
 
     function ContentTypeView() {
-      _ref8 = ContentTypeView.__super__.constructor.apply(this, arguments);
-      return _ref8;
+      ContentTypeView.__super__.constructor.apply(this, arguments);
     }
 
     ContentTypeView.prototype.initialize = function() {};
@@ -2051,8 +2066,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     ContentTypeView.prototype.render = function() {
       var template;
       template = this.template();
-      $(this.el).html(template(this.model));
-      $('label[for=contentType]', $(this.el)).text('Response Content Type');
+      jQuery(this.el).html(template(this.model));
+      jQuery('label[for=contentType]', jQuery(this.el)).text('Response Content Type');
       return this;
     };
 
@@ -2065,11 +2080,11 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   })(Backbone.View);
 
   ResponseContentTypeView = (function(_super) {
+
     __extends(ResponseContentTypeView, _super);
 
     function ResponseContentTypeView() {
-      _ref9 = ResponseContentTypeView.__super__.constructor.apply(this, arguments);
-      return _ref9;
+      ResponseContentTypeView.__super__.constructor.apply(this, arguments);
     }
 
     ResponseContentTypeView.prototype.initialize = function() {};
@@ -2077,8 +2092,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     ResponseContentTypeView.prototype.render = function() {
       var template;
       template = this.template();
-      $(this.el).html(template(this.model));
-      $('label[for=responseContentType]', $(this.el)).text('Response Content Type');
+      jQuery(this.el).html(template(this.model));
+      jQuery('label[for=responseContentType]', jQuery(this.el)).text('Response Content Type');
       return this;
     };
 
@@ -2091,11 +2106,11 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   })(Backbone.View);
 
   ParameterContentTypeView = (function(_super) {
+
     __extends(ParameterContentTypeView, _super);
 
     function ParameterContentTypeView() {
-      _ref10 = ParameterContentTypeView.__super__.constructor.apply(this, arguments);
-      return _ref10;
+      ParameterContentTypeView.__super__.constructor.apply(this, arguments);
     }
 
     ParameterContentTypeView.prototype.initialize = function() {};
@@ -2103,8 +2118,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     ParameterContentTypeView.prototype.render = function() {
       var template;
       template = this.template();
-      $(this.el).html(template(this.model));
-      $('label[for=parameterContentType]', $(this.el)).text('Parameter content type:');
+      jQuery(this.el).html(template(this.model));
+      jQuery('label[for=parameterContentType]', jQuery(this.el)).text('Parameter content type:');
       return this;
     };
 
