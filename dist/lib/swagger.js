@@ -577,9 +577,6 @@
       var req, str;
       req = this.required ? 'propReq' : 'propOpt';
       str = '<span class="propName ' + req + '">' + this.name + '</span> (<span class="propType">' + this.dataTypeWithRef + '</span>';
-      if (!this.required) {
-        str += ', <span class="propOptKey">optional</span>';
-      }
       str += ')';
       if (this.values != null) {
         str += " = <span class='propVals'>['" + this.values.join("' or '") + "']</span>";
